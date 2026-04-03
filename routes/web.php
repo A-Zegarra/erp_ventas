@@ -13,9 +13,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
-    Route::resource('clientes', ClienteController::class)->only(['index']);
-    Route::resource('unidades-sunat', UnidadSunatController::class)->only(['index']);
-    Route::resource('tipos-producto', TipoProductoController::class)->only(['index']);
+    Route::resource('clientes', ClienteController::class);
+Route::resource('unidades-sunat', UnidadSunatController::class)->parameters(['unidades-sunat' => 'unidadSunat']);
+        Route::resource('tipos-producto', TipoProductoController::class)->only(['index']);
     Route::resource('productos', ProductoController::class)->only(['index']);
     Route::resource('vehiculos', VehiculoController::class)->only(['index']);
     Route::resource('conductores', ConductorController::class)->only(['index']);

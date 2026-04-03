@@ -7,59 +7,68 @@ use Illuminate\Http\Request;
 
 class UnidadSunatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('unidades-sunat.index');
+        $unidades = UnidadSunat::latest()->paginate(10);
+
+        return view('unidades-sunat.index', compact('unidades'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('unidades-sunat.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'codigo_sunat' => 'required|string|max:10|unique:unidad_sunats,codigo_sunat',
+            'descripcion'  => 'required|string|max:50',
+            'activo'       => 'required|boolean',
+        ]);
+
+        $validated['activo'] = $request->boolean('activo');
+
+        UnidadSunat::create($validated);
+
+        return redirect()
+            ->route('unidades-sunat.index')
+            ->with('success', 'Unidad SUNAT creada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(UnidadSunat $unidadSunat)
     {
-        //
+        return redirect()->route('unidades-sunat.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(UnidadSunat $unidadSunat)
     {
-        //
+        return view('unidades-sunat.edit', compact('unidadSunat'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, UnidadSunat $unidadSunat)
     {
-        //
+        $validated = $request->validate([
+            'codigo_sunat' => 'required|string|max:10|unique:unidad_sunats,codigo_sunat,' . $unidadSunat->id,
+            'descripcion'  => 'required|string|max:50',
+            'activo'       => 'required|boolean',
+        ]);
+
+        $validated['activo'] = $request->boolean('activo');
+
+        $unidadSunat->update($validated);
+
+        return redirect()
+            ->route('unidades-sunat.index')
+            ->with('success', 'Unidad SUNAT actualizada correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(UnidadSunat $unidadSunat)
     {
-        //
+        $unidadSunat->delete();
+
+        return redirect()
+            ->route('unidades-sunat.index')
+            ->with('success', 'Unidad SUNAT eliminada correctamente.');
     }
 }

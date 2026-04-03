@@ -1,21 +1,52 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Clientes
-        </h2>
-    </x-slot>
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <h1 class="text-2xl font-bold mb-2">Módulo de clientes</h1>
-                <p class="text-gray-700 mb-4">
-                    Esta es la vista índice inicial del módulo. En el siguiente paso
-                    construiremos el listado real y el formulario de registro.
-                </p>
-                <a href="{{ route('dashboard') }}" class="inline-block px-4 py-2 border rounded-lg">
-                    Volver al dashboard
-                </a>
-            </div>
-        </div>
+<x-erp-layout title="Clientes">
+    <h1 style="margin-top:0;">Clientes</h1>
+    <div style="margin-bottom:16px;">
+        <a href="{{ route('clientes.create') }}" style="background:#16a34a; color:white; padding:10px 14px; text
+decoration:none; border-radius:6px;">
+            Nuevo cliente
+        </a>
     </div>
-</x-app-layout>
+    <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse:collapse;">
+        <thead style="background:#e5e7eb;">
+            <tr>
+                <th>ID</th>
+                <th>Documento</th>
+                <th>Número</th>
+                <th>Nombre / Razón Social</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th width="180">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($clientes as $cliente)
+                <tr>
+                    <td>{{ $cliente->id }}</td>
+                    <td>{{ $cliente->tipo_documento }}</td>
+                    <td>{{ $cliente->numero_documento }}</td>
+                    <td>{{ $cliente->nombre_razon_social }}</td>
+                    <td>{{ $cliente->telefono }}</td>
+                    <td>{{ $cliente->email }}</td>
+                    <td>{{ $cliente->estado ? 'Activo' : 'Inactivo' }}</td>
+                    <td>
+                        <a href="{{ route('clientes.edit', $cliente) }}">Editar</a>
+                        |
+                        <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('¿Eliminar cliente?')">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="8">No hay clientes registrados.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+    <div style="margin-top:16px;">
+        {{ $clientes->links() }}
+    </div>
+</x-erp-layout>
