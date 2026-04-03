@@ -7,59 +7,61 @@ use Illuminate\Http\Request;
 
 class TipoProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('tipos-producto.index');
+        $tiposProducto = TipoProducto::latest()->paginate(10);
+
+        return view('tipos-producto.index', compact('tiposProducto'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('tipos-producto.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:100|unique:tipo_productos,nombre',
+        'descripcion' => 'nullable|string|max:255',
+        'activo' => 'required|boolean',
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TipoProducto $tipoProducto)
-    {
-        //
-    }
+    $validated['activo'] = $request->boolean('activo');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TipoProducto $tipoProducto)
-    {
-        //
-    }
+    TipoProducto::create($validated);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TipoProducto $tipoProducto)
-    {
-        //
-    }
+    return redirect()
+        ->route('tipos-producto.index')
+        ->with('success', 'Tipo de producto creado correctamente.');
+}
+ public function edit(TipoProducto $tipoProducto)
+{
+    return view('tipos-producto.edit', compact('tipoProducto'));
+}
 
-    /**
-     * Remove the specified resource from storage.
-     */
+public function update(Request $request, TipoProducto $tipoProducto)
+{
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:100|unique:tipo_productos,nombre,' . $tipoProducto->id,
+        'descripcion' => 'nullable|string|max:255',
+        'activo' => 'required|boolean',
+    ]);
+
+    $validated['activo'] = $request->boolean('activo');
+
+    $tipoProducto->update($validated);
+
+    return redirect()
+        ->route('tipos-producto.index')
+        ->with('success', 'Tipo de producto actualizado correctamente.');
+}
     public function destroy(TipoProducto $tipoProducto)
     {
-        //
+        $tipoProducto->delete();
+
+        return redirect()
+            ->route('tipos-producto.index')
+            ->with('success', 'Tipo de producto eliminado correctamente.');
     }
 }

@@ -17,6 +17,17 @@ class Producto extends Model
         'afecto_igv',
         'activo',
     ];
+    protected function casts(): array
+    {
+        return [
+            'precio_compra' => 'decimal:2',
+            'precio_venta' => 'decimal:2',
+            'stock_inicial' => 'decimal:2',
+            'stock_minimo' => 'decimal:2',
+            'afecto_igv' => 'boolean',
+            'activo' => 'boolean',
+        ];
+    }
     public function tipoProducto(): BelongsTo
     {
         return $this->belongsTo(TipoProducto::class);
