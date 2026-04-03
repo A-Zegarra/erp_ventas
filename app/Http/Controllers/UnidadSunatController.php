@@ -12,7 +12,7 @@ class UnidadSunatController extends Controller
      */
     public function index()
     {
-        //
+        return view('unidades-sunat.index');
     }
 
     /**
