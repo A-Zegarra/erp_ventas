@@ -44,6 +44,7 @@ class ProductoController extends Controller
 
         $validated['afecto_igv'] = $request->boolean('afecto_igv');
         $validated['activo'] = $request->boolean('activo');
+        $validated['stock_actual'] = $validated['stock_inicial'];
 
         Producto::create($validated);
 

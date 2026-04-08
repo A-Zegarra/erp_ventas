@@ -17,14 +17,12 @@
             </div>
             <nav style="display:flex; gap:12px; flex-wrap:wrap;">
                 <a href="{{ route('dashboard') }}" style="color:white; text-decoration:none;">Dashboard</a>
-                <a href="{{ route('clientes.index') }}" style="color:white; text
-decoration:none;">Clientes</a>
-                <a href="{{ route('unidades-sunat.index') }}" style="color:white; text
-decoration:none;">Unidades SUNAT</a>
-                <a href="{{ route('tipos-producto.index') }}" style="color:white; text
-decoration:none;">Tipos de producto</a>
-                <a href="{{ route('productos.index') }}" style="color:white; text
-decoration:none;">Productos</a>
+                <a href="{{ route('clientes.index') }}" style="color:white; text-decoration:none;">Clientes</a>
+                <a href="{{ route('unidades-sunat.index') }}" style="color:white; text-decoration:none;">Unidades SUNAT</a>
+                <a href="{{ route('tipos-producto.index') }}" style="color:white; text-decoration:none;">Tipos de producto</a>
+                <a href="{{ route('productos.index') }}" style="color:white; text-decoration:none;">Productos</a>
+                <a href="{{ route('compras.index') }}" style="color:white; text-decoration:none;">Compras</a>
+
                 SUNAT</a>
                 <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                     @csrf

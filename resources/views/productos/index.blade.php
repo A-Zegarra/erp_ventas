@@ -16,8 +16,11 @@
                 <th>Nombre</th>
                 <th>Tipo producto</th>
                 <th>Unidad SUNAT</th>
+                <th>Precio compra</th>
                 <th>Precio venta</th>
                 <th>Stock inicial</th>
+                <th>Stock actual</th>
+                <th>Stock mínimo</th>
                 <th>Estado</th>
                 <th width="200">Acciones</th>
             </tr>
@@ -29,21 +32,22 @@
                     <td>{{ $producto->codigo }}</td>
                     <td>{{ $producto->nombre }}</td>
                     <td>{{ $producto->tipoProducto->nombre ?? 'Sin tipo' }}</td>
-                    <td>{{ $producto->unidadSunat->descripcion ?? 'Sin unidad' }}</td>
-                    <td>{{ number_format($producto->precio_venta, 2) }}</td>
-                    <td>{{ $producto->stock_inicial }}</td>
+                    <td>{{ $producto->unidadSunat->codigo_sunat ?? '' }} {{ $producto->unidadSunat ? '- ' . $producto->unidadSunat->descripcion : 'Sin unidad' }}</td>
+                    <td>S/ {{ number_format($producto->precio_compra, 2) }}</td>
+                    <td>S/ {{ number_format($producto->precio_venta, 2) }}</td>
+                    <td>{{ number_format($producto->stock_inicial, 2) }}</td>
+                    <td>{{ number_format($producto->stock_actual, 2) }}</td>
+                    <td>{{ number_format($producto->stock_minimo, 2) }}</td>
                     <td>{{ $producto->activo ? 'Activo' : 'Inactivo' }}</td>
                     <td>
                         <a href="{{ route('productos.edit', $producto) }}">Editar</a>
                         |
-
                         <form action="{{ route('productos.destroy', $producto) }}"
                               method="POST"
                               style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"
-                                    onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
+                            <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
                                 Eliminar
                             </button>
                         </form>
@@ -51,7 +55,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9">No hay productos registrados.</td>
+                    <td colspan="12">No hay productos registrados.</td>
                 </tr>
             @endforelse
         </tbody>
